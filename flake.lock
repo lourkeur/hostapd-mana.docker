@@ -89,15 +89,15 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1661541889,
+        "lastModified": 1661804360,
         "narHash": "sha256-k76sU8BeCGe+h9q4OGzleSdKc/wDmeno0sIK4w8q1A0=",
-        "owner": "lourkeur",
+        "owner": "nlewo",
         "repo": "nix2container",
-        "rev": "0626748b2cc74c9c4439837e28869e3d6157d086",
+        "rev": "4e8ec9b377b992d1a5f585bf2342a55dd5e9bdfb",
         "type": "github"
       },
       "original": {
-        "owner": "lourkeur",
+        "owner": "nlewo",
         "repo": "nix2container",
         "type": "github"
       }

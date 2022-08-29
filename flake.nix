@@ -7,7 +7,7 @@
   inputs.flake-compat.url = "github:edolstra/flake-compat";
   inputs.flake-compat.flake = false;
   inputs.hercules-ci-effects.url = "github:hercules-ci/hercules-ci-effects";
-  inputs.nix2container.url = "github:lourkeur/nix2container";
+  inputs.nix2container.url = "github:nlewo/nix2container";
 
   # Outputs are the public-facing interface to the flake.
   outputs = inputs @ {
