@@ -8,6 +8,7 @@
   inputs.flake-compat.flake = false;
   inputs.hercules-ci-effects.url = "github:hercules-ci/hercules-ci-effects";
   inputs.nix2container.url = "github:nlewo/nix2container";
+  inputs.nixpkgs.url = "nixpkgs/nixos-22.11";
 
   # Outputs are the public-facing interface to the flake.
   outputs = inputs @ {
