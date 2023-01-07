@@ -31,6 +31,9 @@
         formatter = pkgs.alejandra;
       };
 
+      hercules-ci.flake-update.enable = true;
+      hercules-ci.flake-update.when.dayOfWeek = "Sat";
+
       flake.effects = withSystem "x86_64-linux" (
         {
           self',
