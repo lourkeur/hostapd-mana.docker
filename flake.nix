@@ -26,22 +26,21 @@
         inputs.hercules-ci-effects.overlay
       ];
 
-      outputsBuilder = channels:
-      let
+      outputsBuilder = channels: let
         inherit (channels.nixpkgs) alejandra callPackage effects system;
         inherit (inputs.nix2container.packages.${system}) nix2container skopeo-nix2container;
-        image = callPackage nix/package.nix { inherit nix2container; };
+        image = callPackage nix/package.nix {inherit nix2container;};
       in {
-          packages.default = image;
-          formatter = alejandra;
-          effects.publishContainer = effects.mkEffect {
-            inputs = [ image.copyTo skopeo-nix2container ];
-            secretsMap.password = "ghcr-publish-token";
+        packages.default = image;
+        formatter = alejandra;
+        effects.publishContainer = effects.mkEffect {
+          inputs = [image.copyTo skopeo-nix2container];
+          secretsMap.password = "ghcr-publish-token";
           effectScript = ''
             readSecretString password .token | skopeo login ghcr.io -u lourkeur --password-stdin
             copy-to docker://ghcr.io/lourkeur/hostapd-mana.docker:latest-${system}
-            '';
-          };
+          '';
         };
+      };
     };
 }
