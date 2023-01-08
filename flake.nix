@@ -45,28 +45,19 @@
         }: let
           inherit (inputs'.nix2container.packages) skopeo-nix2container;
         in {
-          publishContainer.x86_64 = let
-            image = self'.packages.default;
-          in
-            hci-effects.mkEffect {
-              inputs = [skopeo-nix2container];
-              secretsMap.password = "ghcr-publish-token";
-              effectScript = ''
-                readSecretString password .token | skopeo login ghcr.io -u lourkeur --password-stdin
-                skopeo --insecure-policy copy nix:${image} docker://ghcr.io/lourkeur/hostapd-mana.docker:latest-${system}
-              '';
-            };
-          publishContainer.aarch64 = let
-            image = self.packages.aarch64-linux.default;
-          in
-            hci-effects.mkEffect {
-              inputs = [skopeo-nix2container];
-              secretsMap.password = "ghcr-publish-token";
-              effectScript = ''
-                readSecretString password .token | skopeo login ghcr.io -u lourkeur --password-stdin
-                skopeo --insecure-policy copy nix:${image} docker://ghcr.io/lourkeur/hostapd-mana.docker:latest-aarch64-linux
-              '';
-            };
+          publishContainer = hci-effects.mkEffect {
+            inputs = [pkgs.podman skopeo-nix2container];
+            secretsMap.password = "ghcr-publish-token";
+            effectScript = ''
+              readSecretString password .token | skopeo login ghcr.io -u lourkeur --password-stdin
+              skopeo --insecure-policy copy nix:${self.packages.x86_64-linux.default} docker://ghcr.io/lourkeur/hostapd-mana.docker:latest-x86_64-linux
+              skopeo --insecure-policy copy nix:${self.packages.aarch64-linux.default} docker://ghcr.io/lourkeur/hostapd-mana.docker:latest-aarch64-linux
+              podman manifest create hostapd-mana \
+                docker://ghcr.io/lourkeur/hostapd-mana.docker:latest-x86_64-linux \
+                docker://ghcr.io/lourkeur/hostapd-mana.docker:latest-aarch64-linux
+              podman manifest push hostapd-mana ghcr.io/lourkeur/hostapd-mana.docker:latest
+            '';
+          };
         }
       );
     });
